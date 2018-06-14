@@ -27,19 +27,6 @@ def main():
     # Show/hide Orbits
     showTrail = False
 
-    """
-    sun = Particle()
-    sun.px, sun.py = zx, zy
-    sun.vx = sun.vy = 0.
-    sun.mass = 1000
-    sun.setR()
-    particles.append(sun)
-    for p in particles:
-        if p is sun:
-            continue
-        if sun.collide(p):
-            p.exist = False  # ignore planets inside the sun
-    """
     framecount = 0
     lasttime = 0
 

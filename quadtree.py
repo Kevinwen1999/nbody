@@ -20,13 +20,6 @@ class Treenode:
         self.cy = y
         # Total mass
         self.tm = 0,
-    """
-    def __del__(self):
-        for j in range(4):
-            if self.child[j] is None:
-                continue
-            del self.child[j]
-    """
 
     # Insert a particle into the tree
     def insertNode(self, a):
