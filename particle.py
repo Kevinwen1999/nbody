@@ -6,8 +6,8 @@ from constants import *
 class Particle:
     def __init__(self):
         # Position
-        self.px = float(random.randint(Width / 8, Width - Width / 8))
-        self.py = float(random.randint(Height / 8, Height - Height / 8))
+        self.px = float(random.randint(Width / 3, Width - Width / 3))
+        self.py = float(random.randint(Height / 3, Height - Height / 3))
         # Velocity
         self.vx = float(random.randint(-10, 10))
         self.vy = float(random.randint(-10, 10))
