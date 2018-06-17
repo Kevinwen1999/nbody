@@ -1,110 +1,72 @@
-import math
-import pygame
-import random
 import time
+from matplotlib import pyplot as plt
+from matplotlib import animation
 
 from particle import Particle
 from quadtree import Treenode
 from constants import *
 
+
 def main():
-    pygame.init()
-    screen = pygame.display.set_mode((Width, Height))
 
     # Initialize particles
     particles = []
-    pressed = {pygame.K_i: False, pygame.K_k: False, pygame.K_ESCAPE: False, pygame.K_SPACE: False}
 
-    for i in range(nPar):
+    for i in range(nPar - 1):
         particles.append(Particle())
+    particles.append(Particle(1000000))
 
-    # Zoom coefficient
-    zoom = 1.0
-    # Zoompoint
-    zx = Width / 2.0
-    zy = Height / 2.0
-
-    # Show/hide Orbits
-    showTrail = False
-
-    framecount = 0
-    lasttime = 0
-
-    while True:
-        # print("zx: %f, zy: %f\n" % (zx, zy))
-        # print("px: %f, py: %f\n" % (particles[0].px, particles[0].py))
-        # print("%f" % zoom)
-
-        pygame.display.flip()
-        if not showTrail:
-            screen.fill((0, 0, 0))
-
-        # Remove merged particles
+    # Calculate new particle position
+    def step():
         particles[:] = [x for x in particles if x.exist and (0 <= x.px <= Width and 0 <= x.py <= Height)]
 
-        # Paint all particles
-        for i in particles:
-            # Scaling: Set zoompoint as origin, then apply zoom factor
-            pygame.draw.circle(screen, i.color, (int(round(((i.px - zx) * zoom + zx), 0)), int(round(((i.py - zy) * zoom + zy), 0))), int(i.r * zoom), 0)
-
-        # Check keys
-        while True:
-            event = pygame.event.poll()
-            if event.type == pygame.NOEVENT:
-                break
-            elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:
-                pressed[event.key] = event.type == pygame.KEYDOWN
-
-
+        # Build new quadtree
         Quadtree = Treenode(0.0, 0.0, 1.0)
         for i in particles:
             i.ax = i.ay = 0
             Quadtree.insertNode(i)
 
+        # Calculate mass distributions
         Quadtree.calcMass()
 
-        lasttime = time.time()
+        #lasttime = time.time()
+
+        # Calculate accelerations and update particle positions
         for i in particles:
             Quadtree.calcForce(i)
             i.updatePV()
 
-        print("%f" % (time.time() - lasttime))
+        #print("%f" % (time.time() - lasttime))
 
+    def visualize(particles):
 
-        # Translate mouse position
-        def getMouse(x, y):
-            nx, ny = pygame.mouse.get_pos()
-            nx = int((nx - x) * zoom + x)
-            ny = int((ny - y) * zoom + y)
-            return nx, ny
+        fig = plt.figure()
+        ax = plt.subplot(111)
+        ax.patch.set_facecolor("black")
+        line =  line = ax.scatter([], [])
+        plt.xlim(0, Width)
+        plt.ylim(0, Height)
 
-        # Handle input
-        if pressed[pygame.K_i]:
-            zoom /= 0.99
-            zoom = min(zoom, 1.5)
-            zx, zy = getMouse(zx, zy)
+        def init():
+            line = ax.scatter([], [])
+            return line,
 
-        if pressed[pygame.K_k]:
-            zoom /= 1.01
-            zx, zy = getMouse(zx, zy)
+        def animate(i):
+            step()
+            X = [x.px for x in particles]
+            Y = [x.py for x in particles]
+            S = [x.r for x in particles]
+            C = [x.color for x in particles]
+            P = list(zip(X, Y))
+            line.set_offsets(P)
+            line._sizes = S
+            line.set_color(C)
+            return line,
 
-        if pressed[pygame.K_SPACE]:
-            showTrail = not showTrail
+        anim = animation.FuncAnimation(fig, animate, init_func = init, blit = True, interval = 10)
+        plt.show()
 
-        if pressed[pygame.K_ESCAPE]:
-            break
+    visualize(particles)
 
-        if event.type == pygame.NOEVENT:
-            pygame.time.wait(1)
-
-        """
-
-        print("finished loop %d in %f\n" % (framecount, time.time() - lasttime))
-        framecount += 1
-        lasttime = time.time()
-
-        print("%f %f" % (particles[1].px, particles[1].py))
-        
-        """
 main()
 

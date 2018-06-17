@@ -2,12 +2,15 @@ import math
 from quadtree import *
 from constants import *
 
+
 def distBetweenPoints(x1, y1, x2, y2):
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
 
 # Test if point is inside rectangle
 def insideRectangle(x1, x2, y1, y2, xx, yy):
     return (x1 <= xx <= x2) and (y1 <= yy <= y2)
+
 
 # Get coordinate of top corner of a quadrant
 def getTopCoordinate(i, q):
@@ -19,6 +22,7 @@ def getTopCoordinate(i, q):
         ty += h
     return tx, ty
 
+
 # Get Quadrant of particle
 def getQuadrant(a, i):
     tx, ty = i.x, i.y
@@ -28,6 +32,7 @@ def getQuadrant(a, i):
         if insideRectangle(nx, nx + w, ny, ny + h, a.px, a.py):
             return j
     return 0
+
 
 # Calculate acceleration of particle a due to b
 def getAcceleration(bx, by, bm, a):

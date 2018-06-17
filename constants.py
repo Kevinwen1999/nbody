@@ -2,12 +2,12 @@
 Width = 1080
 Height = 1080
 # Number of Particles initially
-nPar = 100
+nPar = 200
 # Gravity coefficient
-GC = 10.0
+GC = 10
 # Density coefficient
 Density = 0.001
 # Time interval
-DT = 0.1
-# Threshold for approxmation
+DT = 0.01
+# Threshold for approximation
 Theta = 0.3

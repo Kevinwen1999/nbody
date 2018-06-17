@@ -64,4 +64,3 @@ class Treenode:
                 if self.child[j] is None:
                     continue
                 self.child[j].calcForce(a)
-
