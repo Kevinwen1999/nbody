@@ -1,13 +1,13 @@
 # Windows size
-Width = 1080
-Height = 1080
+Width = 5000
+Height = 5000
 # Number of Particles initially
-nPar = 200
+nPar = 500
 # Gravity coefficient
-GC = 10
+GC = 5
 # Density coefficient
-Density = 0.001
+Density = 0.01
 # Time interval
-DT = 0.01
+DT = 0.001
 # Threshold for approximation
 Theta = 0.3
