@@ -71,10 +71,10 @@ class Treenode:
     # Merge particles that are too close
     def checkMerge(self, a, par):
         if self.n == 1:
-            if self.nid == par[a].id or par[self.nid].exist == False:
+            if self.nid == par[a].id or par[self.nid].exist is False:
                 return
             # If collide, merge and conserve momentum
-            if distBetweenPoints(self.cx, self.cy, par[a].px, par[a].py) <= par[a].r + par[self.nid].r:
+            if distBetweenPoints(par[self.nid].px, par[self.nid].py, par[a].px, par[a].py) <= par[a].r + par[self.nid].r:
                 par[self.nid].exist = False
                 par[a].vx = (par[a].vx * par[a].mass + par[self.nid].vx * par[self.nid].mass) / (par[a].mass + par[self.nid].mass)
                 par[a].vy = (par[a].vy * par[a].mass + par[self.nid].vy * par[self.nid].mass) / (par[a].mass + par[self.nid].mass)

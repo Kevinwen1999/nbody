@@ -16,7 +16,7 @@ class Particle:
         self.ax = 0
         self.ay = 0
         # Radius
-        self.r = random.randint(10, 200) * 1.0
+        self.r = random.randint(10, 10) * 1.0
         # Boolean to keep track whether the particle still exist
         self.exist = True
         # Randomizing particle color to something visible

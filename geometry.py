@@ -75,13 +75,13 @@ def scale(ax, ay, f):
 
 def disttoLineSeg(ax, ay, bx, by, px, py):
     apx, apy = getVec(ax, ay, px, py)
-    bpx, bpy = getVec(bx, by, px, py)
-    u = dot(apx, apy, bpx, bpy) / dot(bx - ax, by - ay, bx - ax, by - ay)
+    abx, aby = getVec(ax, ay, bx, by)
+    u = dot(apx, apy, abx, aby) / dot(abx, aby, abx, aby)
     if u < 0.0:
         return distBetweenPoints(ax, ay, px, py)
     elif u > 1.0:
         return distBetweenPoints(bx, by, px, py)
     else:
-        tx, ty = scale(bx - ax, by - ay, u)
+        tx, ty = scale(abx, aby, u)
         cx, cy = translate(ax, ay, tx, ty)
         return distBetweenPoints(px, py, cx, cy)
